@@ -1,21 +1,30 @@
 <div>
 
+    <div *ngIf="isEdit == false" >
+        <button type="button" class="btn btn-sm btn-primary" (click)="startEdit()">EDIT</button>
+    </div>
+    <div *ngIf="isEdit == true">
+        <button type="button" class="btn btn-sm btn-primary" (click)="saveCat()">SAVE</button>
+        <button type="button" class="btn btn-sm btn-warning" (click)="cancelEdit()">Cancel</button>
+    </div>
 
+    <br>
     <div class="form-group">
         <label>Subjects</label>
-        <select class="form-control" [(ngModel)]="selectedSub" (change)="getCatList()">
+        <select class="form-control" [(ngModel)]="selectedSub" (change)="getCatList()" [disabled]="isEdit == true">
             <option *ngFor="let sub of subs" [value]="sub.key" >{{sub.name}}</option>
         </select>
     </div>
 
-
-    <label>New Category</label>
-    <div class="row">
-        <div class="col-xl-9 text-xs-center">
-            <input #newCat class="form-control">
-        </div>
-        <div class="col-xl-3 text-xs-center">
-            <button type="button" style="height: 100%; width: 100px;" class="btn btn-sm btn-primary" (click)="addCat(newCat.value)" >Add</button>
+    <div *ngIf="isEdit == false">
+        <label>New Category</label>
+        <div class="row">
+            <div class="col-xl-9 text-xs-center">
+                <input #newCat class="form-control">
+            </div>
+            <div class="col-xl-3 text-xs-center">
+                <button type="button" style="height: 100%; width: 100px;" class="btn btn-sm btn-primary" (click)="addCat(newCat.value)" >Add</button>
+            </div>
         </div>
     </div>
         
@@ -33,12 +42,21 @@
                 <th width="10%"></th>
             </tr>
             </thead>
-            <tbody>
+            <tbody *ngIf="isEdit == false">
             <tr *ngFor="let cat of cats">
                 <th scope="row" width="20%">{{cat.num}}</th>
                 <td (click)="selectCat(cat)" style="cursor: pointer" >{{cat.name}}</td>
+                <td width="10%"></td>
+            </tr>
+            </tbody>
+            <tbody *ngIf="isEdit == true" [sortablejs]="cats_">
+            <tr *ngFor="let cat of cats_; let i = index;">
+                <th scope="row" width="20%">{{i+1}}</th>
+                <td>
+                    <input type="text" [(ngModel)]="cat.name">
+                </td>
                 <td width="10%">
-                    <button type="button" class="btn btn-sm btn-danger" (click)="removeCat(cat.key)" >
+                    <button type="button" class="btn btn-sm btn-danger" (click)="trashCat(i, cat)" >
                         <i class="fa fa-fw fa-trash-o"></i>
                     </button>
                 </td>

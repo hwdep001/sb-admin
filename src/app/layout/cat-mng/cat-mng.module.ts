@@ -5,11 +5,14 @@ import { CommonModule } from '@angular/common';
 import { CatMngRoutingModule } from './cat-mng-routing.module';
 import { CatMngComponent } from './cat-mng.component';
 
+import { SortablejsModule } from 'angular-sortablejs'
+
 @NgModule({
   imports: [
     CommonModule,
     CatMngRoutingModule,
-    FormsModule
+    FormsModule,
+    SortablejsModule
   ],
   declarations: [CatMngComponent]
 })

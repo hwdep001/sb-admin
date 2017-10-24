@@ -14,6 +14,7 @@ export interface WordInterface {
   
     //
     level?: number;
+    code?: number;
   }
   
   export class Word implements WordInterface {
@@ -32,6 +33,7 @@ export interface WordInterface {
   
     //
     level?: number;
+    code?: number;
   
     constructor(obj?: WordInterface){
       this.key = obj && obj.key || null;
@@ -48,5 +50,6 @@ export interface WordInterface {
       this.lecName = obj && obj.lecName || null;
   
       this.level = obj && obj.level || 0;
+      this.code = obj && obj.code || 0;
     }
   }

@@ -1,3 +1,4 @@
+import { FileService } from './provider/file.service';
 import { CommonUtil } from './utils/commonUtil';
 import { environment } from './../environments/environment';
 import { NgModule } from '@angular/core';
@@ -15,6 +16,8 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import * as firebase from 'firebase';
+
+import { SortablejsModule } from 'angular-sortablejs'
 
 firebase.initializeApp(environment.firebase);
 
@@ -44,10 +47,12 @@ export function HttpLoaderFactory(http: Http) {
         AngularFireModule.initializeApp(environment.firebase), // imports firebase/app needed for everything
         AngularFireDatabaseModule, // imports firebase/firestore, only needed for database features
         AngularFireAuthModule, // imports firebase/auth, only needed for auth features
+        SortablejsModule
     ],
     providers: [
         AuthGuard,
-        CommonUtil
+        CommonUtil,
+        FileService
     ],
     bootstrap: [AppComponent]
 })

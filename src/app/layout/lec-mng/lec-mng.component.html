@@ -1,12 +1,23 @@
 <div>
 
-    <label>New Lecture</label>
-    <div class="row">
-        <div class="col-xl-9 text-xs-center">
-            <input #newLec class="form-control">
-        </div>
-        <div class="col-xl-3 text-xs-center">
-            <button type="button" style="height: 100%; width: 100px;" class="btn btn-sm btn-primary" (click)="addLec(newLec.value)" >Add</button>
+    <div *ngIf="isEdit == false" >
+        <button type="button" class="btn btn-sm btn-primary" (click)="startEdit()">EDIT</button>
+    </div>
+    <div *ngIf="isEdit == true">
+        <button type="button" class="btn btn-sm btn-primary" (click)="saveLec()">SAVE</button>
+        <button type="button" class="btn btn-sm btn-warning" (click)="cancelEdit()">Cancel</button>
+    </div>
+
+    <br>
+    <div *ngIf="isEdit == false">
+        <label>New Lecture</label>
+        <div class="row">
+            <div class="col-xl-9 text-xs-center">
+                <input #newLec class="form-control">
+            </div>
+            <div class="col-xl-3 text-xs-center">
+                <button type="button" style="height: 100%; width: 100px;" class="btn btn-sm btn-primary" (click)="addLec(newLec.value)" >Add</button>
+            </div>
         </div>
     </div>
         
@@ -24,12 +35,21 @@
                 <th width="10%"></th>
             </tr>
             </thead>
-            <tbody>
+            <tbody *ngIf="isEdit == false">
             <tr *ngFor="let lec of lecs">
                 <th scope="row" width="20%">{{lec.num}}</th>
                 <td (click)="selectLec(lec)" style="cursor: pointer" >{{lec.name}}</td>
+                <td width="10%"></td>
+            </tr>
+            </tbody>
+            <tbody *ngIf="isEdit == true" [sortablejs]="lecs_">
+            <tr *ngFor="let lec of lecs_; let i = index;">
+                <th scope="row" width="20%">{{i+1}}</th>
+                <td>
+                    <input type="text" [(ngModel)]="lec.name">
+                </td>
                 <td width="10%">
-                    <button type="button" class="btn btn-sm btn-danger" (click)="removeLec(lec.key)" >
+                    <button type="button" class="btn btn-sm btn-danger" (click)="trashLec(i, lec)" >
                         <i class="fa fa-fw fa-trash-o"></i>
                     </button>
                 </td>

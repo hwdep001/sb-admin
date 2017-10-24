@@ -18,6 +18,10 @@ export class LecMngComponent implements OnInit {
     subKey: string;
     cat: Category = new Category();
     lecs: Array<Lecture>;
+    lecs_: Array<Lecture>;
+    lecs_trash: Array<Lecture>;
+
+    isEdit: boolean = false;
 
     constructor(private router: Router, private activatedRoute: ActivatedRoute) {
     }
@@ -79,8 +83,93 @@ export class LecMngComponent implements OnInit {
         });
     }
 
-    removeLec(lecKey: string) {
-        this.pathRef.child(`${this.subKey}/${this.cat.key}/${lecKey}`).remove()
+    selectLec(lec: Lecture) {
+        this.router.navigate(['word-mng'], {queryParams: {
+            subKey: this.subKey,
+            catKey: this.cat.key,
+            lecKey: lec.key
+        }});
+    }
+
+    //////////////////////////////////////////////////////////////
+
+    startEdit() {
+        this.isEdit = true;
+        this.lecs_trash = [];
+        this.lecs_ = this.lecs.map(x => Object.assign({}, x));
+    }
+
+    cancelEdit() {
+        this.isEdit = false;
+        this.lecs_trash = [];
+    }
+
+    /////////////////////////////////////////////////////////////////
+
+    trashLec(index: number, lec: Lecture) {
+        this.lecs_.splice(index, 1);
+        this.lecs_trash.push(lec);
+    }  
+
+    saveLec() {
+        let i: number = 1;
+        let promises: Array<Promise<any>> = [];
+
+        for(let lec_ of this.lecs_) {
+            let flag = 0; // 0: 변경X, 1: num만 변경, 2: name만 변경, 3: 둘 다 변경
+            lec_.num = i;
+            for(let lec of this.lecs) {
+                if(lec.key == lec_.key) {
+                    if(lec.name != lec_.name && lec.num != lec_.num) {
+                        promises.push(this.updateCat(lec_, true));
+                    } else if(lec.name != lec_.name) {
+                        promises.push(this.updateCat(lec_, false));
+                    } else if(lec.num != lec_.num) {
+                        promises.push(this.dirRef.child(`lecs/${this.subKey}/${this.cat.key}/${lec_.key}`).update({
+                            num: lec_.num
+                        }));
+                    }
+                    break;
+                }
+            }
+            i++;
+        }
+
+        for(let lec of this.lecs_trash) {
+            promises.push(this.removeLec(lec.key));
+        }
+
+        Promise.all(promises).then( () => {
+            this.getLecList();
+            this.isEdit = false;
+        });
+    }
+
+    updateCat(lec: Lecture, isNumChange: boolean): Promise<any> {
+        let promises: Array<Promise<any>> = Array<Promise<any>>();
+        let updateData: CustomObject = {
+            name: lec.name
+        }
+        if(isNumChange) {
+            updateData.num = lec.num;
+        }
+        this.dirRef.child(`lecs/${this.subKey}/${this.cat.key}/${lec.key}`).update(updateData)
+        .then( () => {
+            this.dirRef.child(`words/${this.subKey}/${this.cat.key}/${lec.key}`).once('value', snapshot => {
+                snapshot.forEach(wordSnap => {
+                    promises.push(wordSnap.ref.update({
+                        lecName: lec.name
+                    }));
+                    return false;
+                })
+            });
+        });
+
+        return Promise.all(promises).then();
+    }
+
+    removeLec(lecKey: string): Promise<any> {
+        return this.pathRef.child(`${this.subKey}/${this.cat.key}/${lecKey}`).remove()
         .then( () => {
             console.log(lecKey + ": remove pathRef suc");
             this.dirRef.child(`words/${this.subKey}/${this.cat.key}/${lecKey}`).remove()
@@ -93,13 +182,5 @@ export class LecMngComponent implements OnInit {
                 });
             });
         });
-    }
-
-    selectLec(lec: Lecture) {
-        this.router.navigate(['word-mng'], {queryParams: {
-            subKey: this.subKey,
-            catKey: this.cat.key,
-            lecKey: lec.key
-        }});
     }
 }

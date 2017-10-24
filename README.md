@@ -58,8 +58,32 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 
 
+
+
+
+----------------------------------------------------------------
+### [angularfire2] (https://github.com/angular/angularfire2)
+
+```
+$ npm install angularfire2 firebase --save
+```
+
 ### [js-xlsx] (https://github.com/SheetJS/js-xlsx)
 
 ```
 $ npm install xlsx
+```
+
+### [FileSaver.js] (https://github.com/eligrey/FileSaver.js)
+
+```
+$ npm install file-saver --save
+$ npm install @types/file-saver --save-dev
+```
+
+### [angular-sortablejs] (https://github.com/SortableJS/angular-sortablejs)
+
+```
+$ npm install --save sortablejs
+$ npm install --save angular-sortablejs
 ```

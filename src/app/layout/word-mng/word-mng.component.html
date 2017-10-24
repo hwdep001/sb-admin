@@ -1,5 +1,18 @@
 <div>        
-        
+    <div *ngIf="isEdit == false" >
+        <button type="button" class="btn btn-sm btn-primary" (click)="startEdit()">EDIT</button>
+    </div>
+    <div *ngIf="isEdit == true">
+        <button type="button" class="btn btn-sm btn-primary" (click)="saveWord()">SAVE</button>
+        <button type="button" class="btn btn-sm btn-success" (click)="file.click()" >
+            <i class="fa fa-fw fa-cloud-upload"></i>      
+        </button>
+        <button type="button" class="btn btn-sm btn-warning" (click)="cancelEdit()">Cancel</button>
+        &nbsp;{{fileName}}
+        <input #file type="file" multiple="false" (change)="onFileChange($event)" style="display: none"/>
+    </div>
+
+
     <br>
     <div class="card-header">
         {{cat.name}} > {{lec.name}} > Lecture List
@@ -8,17 +21,41 @@
         <table class="table">
             <thead>
             <tr>
-                <th width="20%">Num</th>
-                <th>Name</th>
-                <th width="10%"></th>
+                <th width="6%">Num</th>
+                <th width="17%">Head1</th>
+                <th width="17%">Head2</th>
+                <th width="25%">Body1</th>
+                <th width="25%">Body2</th>
+                <th></th>
             </tr>
             </thead>
-            <tbody>
-            <tr *ngFor="let word of words">
-                <th scope="row" width="20%">{{word.num}}</th>
-                <td>{{word.name}}</td>
-                <td width="10%">
-                    <button type="button" class="btn btn-sm btn-danger" (click)="removeWord(word.key)" >
+            <tbody *ngIf="isEdit == false">
+            <tr *ngFor="let word of words; let i = index;">
+                <th width="6%" scope="row">{{i+1}}</th>
+                <td width="17%">{{word.head1}}</td>
+                <td width="17%">{{word.head2}}</td>
+                <td width="25%">{{word.body1}}
+                <td width="25%">{{word.body2}}
+                <td></td>
+            </tr>
+            </tbody>
+            <tbody *ngIf="isEdit == true" [sortablejs]="words_">
+            <tr *ngFor="let word of words_; let i = index;">
+                <th width="6%" scope="row">{{i+1}}</th>
+                <td width="17%">
+                    <textarea style="width: 100%" [(ngModel)]="words_[i].head1" >{{word.head1}}</textarea>
+                </td>
+                <td width="17%">
+                    <textarea style="width: 100%" [(ngModel)]="words_[i].head2" >{{word.head2}}</textarea>
+                </td>
+                <td width="25%">
+                    <textarea style="width: 100%" [(ngModel)]="words_[i].body1" >{{word.body1}}</textarea>
+                </td>
+                <td width="25%">
+                    <textarea style="width: 100%" [(ngModel)]="words_[i].body2" >{{word.body2}}</textarea>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-sm btn-danger" (click)="trashWord(i, word)">
                         <i class="fa fa-fw fa-trash-o"></i>
                     </button>
                 </td>
