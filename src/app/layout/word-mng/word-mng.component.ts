@@ -119,7 +119,8 @@ export class WordMngComponent implements OnInit {
         let i: number = 1;
         let promises: Array<Promise<any>> = [];
 		for(let word of this.words_) {
-			word.num = i;
+            word.num = i;
+            word.subKey = this.subKey;
 			word.catKey = this.cat.key
 			word.catName = this.cat.name;
 			word.lecKey = this.lec.key;
