@@ -1,3 +1,4 @@
+import { CommonUtil } from './utils/commonUtil';
 import { environment } from './../environments/environment';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -44,7 +45,10 @@ export function HttpLoaderFactory(http: Http) {
         AngularFireDatabaseModule, // imports firebase/firestore, only needed for database features
         AngularFireAuthModule, // imports firebase/auth, only needed for auth features
     ],
-    providers: [AuthGuard],
+    providers: [
+        AuthGuard,
+        CommonUtil
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule {

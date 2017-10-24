@@ -14,6 +14,9 @@ const routes: Routes = [
             { path: 'grid', loadChildren: './grid/grid.module#GridModule' },
             { path: 'components', loadChildren: './bs-component/bs-component.module#BsComponentModule' },
             { path: 'blank-page', loadChildren: './blank-page/blank-page.module#BlankPageModule' },
+            { path: 'cat-mng', loadChildren: './cat-mng/cat-mng.module#CatMngModule' },
+            { path: 'lec-mng', loadChildren: './lec-mng/lec-mng.module#LecMngModule' },
+            { path: 'word-mng', loadChildren: './word-mng/word-mng.module#WordMngModule' },
         ]
     }
 ];

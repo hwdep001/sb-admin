@@ -1,0 +1,29 @@
+<div>        
+        
+    <br>
+    <div class="card-header">
+        {{cat.name}} > {{lec.name}} > Lecture List
+    </div>
+    <div class="card-block table-responsive">
+        <table class="table">
+            <thead>
+            <tr>
+                <th width="20%">Num</th>
+                <th>Name</th>
+                <th width="10%"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let word of words">
+                <th scope="row" width="20%">{{word.num}}</th>
+                <td>{{word.name}}</td>
+                <td width="10%">
+                    <button type="button" class="btn btn-sm btn-danger" (click)="removeWord(word.key)" >
+                        <i class="fa fa-fw fa-trash-o"></i>
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

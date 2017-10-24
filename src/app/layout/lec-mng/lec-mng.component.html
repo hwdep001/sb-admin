@@ -1,0 +1,40 @@
+<div>
+
+    <label>New Lecture</label>
+    <div class="row">
+        <div class="col-xl-9 text-xs-center">
+            <input #newLec class="form-control">
+        </div>
+        <div class="col-xl-3 text-xs-center">
+            <button type="button" style="height: 100%; width: 100px;" class="btn btn-sm btn-primary" (click)="addLec(newLec.value)" >Add</button>
+        </div>
+    </div>
+        
+        
+    <br>
+    <div class="card-header">
+        {{cat.name}} > Lecture List
+    </div>
+    <div class="card-block table-responsive">
+        <table class="table">
+            <thead>
+            <tr>
+                <th width="20%">Num</th>
+                <th>Name</th>
+                <th width="10%"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let lec of lecs">
+                <th scope="row" width="20%">{{lec.num}}</th>
+                <td (click)="selectLec(lec)" style="cursor: pointer" >{{lec.name}}</td>
+                <td width="10%">
+                    <button type="button" class="btn btn-sm btn-danger" (click)="removeLec(lec.key)" >
+                        <i class="fa fa-fw fa-trash-o"></i>
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
