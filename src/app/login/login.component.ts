@@ -24,14 +24,15 @@ export class LoginComponent implements OnInit {
     onAuthStateChanged() {
         firebase.auth().onAuthStateChanged(user => {
             this.user = user;
-            
+            if(user) {
+                this.router.navigate(['dashboard']);
+            }
         });
     }
 
     onLoggedin() {
         var provider = new firebase.auth.GoogleAuthProvider();
         firebase.auth().signInWithRedirect(provider);
-
     }
 
     onSignOut() {
